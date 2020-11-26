@@ -147,7 +147,7 @@ asn=0
 
   					# Executa o comando mtr e armazena num arquivo temporário, retorna 0 se comando falhar
 			  		test "$mtr" = 1 && rota=$(mtr -w --no-dns -z "$destino") && \
-			  		echo "$rota" |tr -s ' '|sed  's/^\s//g;s/\.\s/,/g;s/\s/,/g' > "$arq_temp"
+			  		echo "$rota" |tr -s ' '|sed  's/^\s//g;s/\.\s/,/g;s/\s/,/g' > "$arq_temp" |echo 1
 
 			  		# Coleta o valor da ASN do arquivo temporário de acordo com o host monitorado
 			  		test "$asn" = 1 && grep "^$3\," "$arq_temp" |cut -d\, -f2
@@ -157,7 +157,5 @@ asn=0
 
 			  		# Coleta o valor da SNT do arquivo temporário de acordo com o host monitorado
 			  		test "$snt" = 1 && grep "^$3\," "$arq_temp" |cut -d\, -f5
-		  				
-  						
 								
 
