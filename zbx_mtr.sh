@@ -5,7 +5,7 @@
 #
 # Ex: ./zbx_mrt.sh -discovery
 #
-# Requisitos: Comando traceroute
+# Requisitos: Comando mtr
 #
 #
 # Evandro José Zipf, Novembro 2020
