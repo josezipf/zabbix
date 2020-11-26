@@ -1,7 +1,7 @@
 #!/bin/bash
 # zbx_mrt.sh
 #
-# Versão 1: Script para coleta de rotas via comando traceroute para Zabbix.
+# Versão 1: Script para coleta de rotas via comando mtr para Zabbix.
 #
 # Ex: ./zbx_mrt.sh -discovery
 #
