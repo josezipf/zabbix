@@ -50,10 +50,10 @@ asn=0
 
 	# Verifica se está instalado o comando mrt
 	if ! command -v mtr > /dev/null
-    then
-        echo "$MENSAGEM_MTR"
-        exit 0;
-    fi
+        then
+          echo "$MENSAGEM_MTR"
+          exit 0;
+        fi
 
 	# Se não passar nenhum arqgumento, mostra mensagem de ajuda
 	[ "$1" ] || {
