@@ -50,10 +50,10 @@ asn=0
 
 	# Verifica se está instalado o comando mrt
 	if ! command -v mtr > /dev/null
-        then
-          echo "$MENSAGEM_MTR"
-          exit 0;
-        fi
+    then
+        echo "$MENSAGEM_MTR"
+        exit 0;
+    fi
 
 	# Se não passar nenhum arqgumento, mostra mensagem de ajuda
 	[ "$1" ] || {
@@ -169,7 +169,7 @@ asn=0
 
   					# Executa o comando mtr e armazena num arquivo temporário
 			  		test "$mtr" = 1 && rota=$(mtr -w --no-dns -z "$destino") && \
-			  		echo "$rota" |tail +3 |tr -s ' '| tr \? 0 |sed  's/^\s//g;s/\.\s/,/g;s/\s/,/g' > "$arq_temp" && echo 1
+			  		echo "$rota" |tr -s ' '| tr \? 0 |sed  's/^\s//g;s/\.\s/,/g;s/\s/,/g' > "$arq_temp" && echo 1
 
 			  		# Coleta o valor da ASN do arquivo temporário de acordo com o host monitorado
 			  		if [ "$asn" = 1 ]; then
