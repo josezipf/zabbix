@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.0</version>
-    <date>2020-11-30T13:21:08Z</date>
+    <date>2020-11-30T14:51:00Z</date>
     <groups>
         <group>
             <name>Templates Noto</name>
@@ -150,7 +150,7 @@ Desenvolvido por NOTO</description>
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>zbx_mtr.sh[-discovery]</key>
+                    <key>zbx_mtr.sh[-discovery,{HOST.HOST}]</key>
                     <delay>30s</delay>
                     <status>0</status>
                     <allowed_hosts/>
