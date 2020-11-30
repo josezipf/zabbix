@@ -14,7 +14,6 @@
 # Variáveis
 
 # Informa o total de saltos do comando mtr
-total_rota=9
 nomehost="$2"
 destino="$3"
 arq_temp="/tmp/rota_"$nomehost".txt"
@@ -34,16 +33,28 @@ asn=0
 	     -ip coleta o ip da rota
 	     -snt coleta o snt da rota
 	     -asn coleta asn da rota
+	     -total coleta o total de saltos percorridos
 	     -V mostra versão do script
 	     -h mostra ajuda
 
-	     Ex: ./zbx_mrt.sh -discovery
+	     Ex: ./zbx_mrt.sh -discovery nomehost
 	     Ex: ./zbx_mrt.sh -ip nomehost numero_da_rota
 	     Ex: ./zbx_mrt.sh -snt nomehost numero_da_rota
 	     Ex: ./zbx_mrt.sh -asn nomehost numero_da_rota
 	   "
+	# Mensagem para informar usuário que o comando mtr não está instalado.
+	MENSAGEM_MTR="Pacote mtr não instalado, 
 
-	
+		instale com apt install mtr em caso de Ubuntu/Debian ou 
+		instale com yum install mtr para RedHat Centos"
+
+	# Verifica se está instalado o comando mrt
+	if ! command -v mtr > /dev/null
+    then
+        echo "$MENSAGEM_MTR"
+        exit 0;
+    fi
+
 	# Se não passar nenhum arqgumento, mostra mensagem de ajuda
 	[ "$1" ] || {
 
@@ -72,6 +83,9 @@ asn=0
 						-asn) asn=1
 						;;
 
+						-total) total=1
+						;;
+
 				        -h|--help)
 				            echo "$MENSAGEM_USO"
 				            exit 0
@@ -94,26 +108,30 @@ asn=0
 				        ;;
 				    esac
 
-
-
-  					if [ "$discovery" = 1 ]; then
+				if [ "$discovery" = 1 ]; then
 
   						# Não deixa passar mais de 1 parametro
-  						[ $# -ne 1 ] && 
+  						[ $# -ne 2 ] && 
   						{ 
-  							echo "Informe somente 1 parâmetro!" 
+  							echo "Informe somente 2 parâmetros!" 
   							exit 0;
   						}
-			 
+
+  					# Verifica se arquivo com as rotas existe.
+  					if [ -f "$arq_temp" ]
+  					then
+
   					   	# Trata primeiro elemento do JSON
 						PRIMEIRO_ELEMENTO=1
+
+						numero_rota=$(grep -o '^[0-9]\+' "$arq_temp")
 
 
 						# Criar o cabeçalho padrão do JSON
 						printf "{";
 						printf "\"data\":[";
 
-							    for numero_rota in $(seq "$total_rota")
+							    for rota in $numero_rota
 							    do
 							        # Verifica o primeiro elemento
 							        if [ $PRIMEIRO_ELEMENTO -ne 1 ]; then
@@ -123,9 +141,9 @@ asn=0
 							        # Não coloca "," caso seja o ultimo dado no JSON
 							        PRIMEIRO_ELEMENTO=0
 
-							        # Cria o JSON de cada DATABASE
+							        # Cria o JSON de cada rota
 							        printf "{"
-							        printf "\"{#ROTA}\":\"$numero_rota\""
+							        printf "\"{#ROTA}\":\"$rota\""
 							        printf "}"
 							    done
 						
@@ -135,7 +153,11 @@ asn=0
 
 						# Encerra
 						exit 0;
-  					fi
+					else
+						echo "Arquivo de rota não existe, rode primeiro Ex: ./zbx_mrt.sh -mrt nomehost google.com.br"
+						exit 0;
+					fi
+  				fi
 
   					# Obriga passar 3 parâmetros se as chaves estiverem ligadas
   					[ $# -ne 3 ] && 
@@ -145,17 +167,57 @@ asn=0
   					}
 
 
-  					# Executa o comando mtr e armazena num arquivo temporário, retorna 0 se comando falhar
+  					# Executa o comando mtr e armazena num arquivo temporário
 			  		test "$mtr" = 1 && rota=$(mtr -w --no-dns -z "$destino") && \
-			  		echo "$rota" |tr -s ' '|sed  's/^\s//g;s/\.\s/,/g;s/\s/,/g' > "$arq_temp" |echo 1
+			  		echo "$rota" |tail +3 |tr -s ' '| tr \? 0 |sed  's/^\s//g;s/\.\s/,/g;s/\s/,/g' > "$arq_temp" && echo 1
 
 			  		# Coleta o valor da ASN do arquivo temporário de acordo com o host monitorado
-			  		test "$asn" = 1 && grep "^$3\," "$arq_temp" |cut -d\, -f2
+			  		if [ "$asn" = 1 ]; then
+			  			
+			  			r_asn=$(grep "^$3\," "$arq_temp" |cut -d\, -f2)
 
+			  			# Se for nulo encerra
+			  			if [ -z "$r_asn" ]; then
+
+			  				echo 0
+			  			    exit 0;
+
+			  			fi 
+
+			  			echo $r_asn;
+			  		fi
+			  		
 			  		# Coleta o valor da IP do arquivo temporário de acordo com o host monitorado
-			  		test "$ip" = 1  && grep "^$3\," "$arq_temp" |cut -d\, -f3
+			  		if [ "$ip" = 1 ]; then
+			  			
+			  			r_ip=$(grep "^$3\," "$arq_temp" |cut -d\, -f3)
 
+			  			# Se for nulo encerra
+			  			if [ -z "$r_ip" ]; then
+
+			  				echo 0
+			  				exit 0;
+
+			  			fi
+
+			  			echo $r_ip;
+			  		fi
+			  		
 			  		# Coleta o valor da SNT do arquivo temporário de acordo com o host monitorado
-			  		test "$snt" = 1 && grep "^$3\," "$arq_temp" |cut -d\, -f5
-								
+			  		if [ "$snt" = 1 ]; then
 
+			  			r_snt=$(grep "^$3\," "$arq_temp" |cut -d\, -f5)
+
+			  			# Se for nulo encerra
+			  			if [ -z "$r_snt" ]; then
+
+			  				echo 0
+			  			    exit 0;
+
+			  			fi 
+
+			  			echo $r_snt;
+			  		fi
+
+			  		# Coleta o total de saltos percorridos até o detino informado
+			  		test "$total" = 1 && grep '^[0-9]\+\,' "$arq_temp"| wc -l
