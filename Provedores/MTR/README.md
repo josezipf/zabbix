@@ -27,7 +27,8 @@ recomendado(opcional), se feito realizado atráves da chave system.run não é n
 Timeout=15
 
 # Colocar script dentro do diretório Externalscripts do Zabbix. Default: /usr/lib/zabbix/externalscripts
-# Permissões para usuário zabbix
+# Permissões para usuário zabbix no script
+cd /usr/lib/zabbix/externalscripts;
 chown zabbix.zabbix zbx_mtr.sh;
 chmod +x zbx_mtr.sh
 
