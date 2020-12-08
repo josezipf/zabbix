@@ -16,6 +16,7 @@ SENHA="senha"
 
 # Rota de teste padrão está para o Google
 Você pode modificar alterando a macro {$DESTINO} dentro do template ou a nível de host.
+Para coleta de alterações de rota, deve ser setado o ID do host na macro {$HOSTID} default: 00000
 
 # Alterar timeout dentro de zabbix_server.conf
 Para rodar a coleta dos dados do mtr o script executa um comando, que faz o trajeto das rotas. Esse, comando demora um tempo de geralmente 15 segundos. Portanto,
