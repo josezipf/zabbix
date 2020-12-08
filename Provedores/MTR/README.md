@@ -1,4 +1,4 @@
-Esse script realiza o monitoramento de rotas atráves do comando mtr e o seu resultado é enviado para o Zabbix.
+Esse script realiza o monitoramento de rotas atráves do comando mtr e o seu resultado é enviado para o Zabbix. Atráves de external check
 
 
 # Requisitos de pacotes: Instalar conforme seu sistema operacional
