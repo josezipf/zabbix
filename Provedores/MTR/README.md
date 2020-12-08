@@ -12,7 +12,7 @@ yum install jq mtr
 # Ajustar dentro do script caminho para conectar no seu Zabbix via API. Criar usuário e senha no Zabbix. O Usuário deve ter permissão de pelo menos leitura do host cadastrado no Zabbix, no qual será realizado o monitoramento.
 API="http://127.0.0.1/noto/api_jsonrpc.php"
 USUARIO="usuario"
-SENHA="senha"
+SENHA="senha".
 Esse procedimento é somente necessário para coleta de alterações de rota.
 
 # Rota de teste padrão está para o Google
