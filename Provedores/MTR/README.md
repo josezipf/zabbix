@@ -1,4 +1,4 @@
-# Requisitos de pacotes instale conforme seu sistema operacional
+# Requisitos de pacotes: Instalar conforme seu sistema operacional
 
 Ubuntu/Debian
 apt install jq mtr
