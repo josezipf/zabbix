@@ -27,7 +27,7 @@ asn=0
 #------------------------------------[ INFORMAÇÔES ZABBBIX ]-------------------------------------------------------------------------------------#
 
 # Caminho para conectar no seu Zabbix via API
-API="http://127.0.0.1/noto/api_jsonrpc.php"
+API="http://127.0.0.1/zabbix/api_jsonrpc.php"
 USUARIO="usuario"
 SENHA="senha"
 
