@@ -13,6 +13,7 @@ yum install jq mtr
 API="http://127.0.0.1/noto/api_jsonrpc.php"
 USUARIO="usuario"
 SENHA="senha"
+Esse procedimento é somente necessário para coleta de alterações de rota.
 
 # Rota de teste padrão está para o Google
 Você pode modificar alterando a macro {$DESTINO} dentro do template ou a nível de host.
