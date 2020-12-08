@@ -28,8 +28,8 @@ asn=0
 
 # Caminho para conectar no seu Zabbix via API
 API="http://127.0.0.1/noto/api_jsonrpc.php"
-USUARIO="api"
-SENHA="api@2020"
+USUARIO="usuario"
+SENHA="senha"
 
 
 	# Mensagem de uso do programa que é enviada para o usuário como ajuda.
