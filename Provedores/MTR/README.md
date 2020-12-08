@@ -21,7 +21,7 @@ recomendado(opcional).
 
 Timeout=15
 
-#
+#  Colocar script no diretório Externalscripts do Zabbix. Default: /usr/lib/zabbix/externalscripts
 
 
 
