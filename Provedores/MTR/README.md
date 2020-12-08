@@ -9,7 +9,8 @@ apt install jq mtr
 # RedHat/Centos
 yum install jq mtr
 
-# Ajustar dentro do script caminho para conectar no seu Zabbix via API. Criar usuário e senha no Zabbix. O Usuário deve ter permissão de pelo menos leitura do host cadastrado no Zabbix, no qual será realizado o monitoramento.
+# Criar usuário e senha no Zabbix para acesso via API. O Usuário deve ter permissão de pelo menos leitura do host cadastrado no Zabbix, no qual será realizado o monitoramento. Alterar no script as informações de API, USUARIO e SENHA, conforme seu ambiente.
+
 API="http://127.0.0.1/noto/api_jsonrpc.php"
 USUARIO="usuario"
 SENHA="senha".
