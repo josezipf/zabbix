@@ -20,7 +20,7 @@ Você pode modificar alterando a macro {$DESTINO} dentro do template ou a nível
 # Alterar timeout dentro de zabbix_server.conf
 Para rodar a coleta dos dados do mtr o script executa um comando, que faz o trajeto das rotas. Esse, comando demora um tempo de geralmente 15 segundos. Portanto,
 altere conforme necessário para seu ambiente. Você também, pode ajustar item para ser executado o comando através da chave system.run do agente. Esse método é 
-recomendado(opcional).
+recomendado(opcional), se feito realizado atráves da chave system.run não é necessário alterar timeout do zabbix_server.conf
 
 Timeout=15
 
