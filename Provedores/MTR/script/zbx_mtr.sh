@@ -200,12 +200,12 @@ SENHA="api@2020"
 						fi
 	  				fi
 
-	  				# Precisa passar exatamente 2 parâmetros
-	  			    [ $# -ne 3 ] && 
-	  				{ 
-	  				  echo "Informe 3 parâmetros!" 
-	  				  exit 0;
-	  				}
+					# Precisa passar exatamente 2 parâmetros
+					    [ $# -ne 3 ] && 
+						{ 
+						  echo "Informe 3 parâmetros!" 
+						  exit 0;
+						}
 
   					# Executa o comando mtr e armazena num arquivo temporário
 			  		test "$mtr" = 1 && rota=$(mtr -w --no-dns -z "$destino") && \
@@ -402,50 +402,49 @@ SENHA="api@2020"
 							    '
 
 						    # Armazena em um arquivo os IDs dos itens que contém ips por host.    
-                            r_item=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API")
-                            # Coloca o retorno em arquivo CSV
-                            echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name] | @csv' > /tmp/rel_itemid_$$.csv
-                            # Extrair o ID do item da rota especifica
-                            id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d\" -f2)
+						    r_item=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API")
+						    # Coloca o retorno em arquivo CSV
+						    echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name] | @csv' > /tmp/rel_itemid_$$.csv
+						    # Extrair o ID do item da rota especifica
+						    id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d\" -f2)
+        					    # Consulta histórico do item via JSON
+						    JSON='
+							{
 
-							# Consulta histórico do item via JSON
-                            JSON='
-                                {
+						       "jsonrpc": "2.0",
+						       "method": "history.get",
+						       "params": {
+								   "output": "extend",
+								   "history": 1,
+								   "itemids": "'$id_item'",
+								   "sortfield": "clock",
+								   "sortorder": "DESC",
+								   "limit": "'$total_valores'"
+								     },
 
-                               "jsonrpc": "2.0",
-                               "method": "history.get",
-                               "params": {
-                                           "output": "extend",
-                                           "history": 1,
-                                           "itemids": "'$id_item'",
-                                           "sortfield": "clock",
-                                           "sortorder": "DESC",
-                                           "limit": "'$total_valores'"
-                                   	     },
+							"auth": "'$TOKEN'",
+							"id": 2
 
-                                "auth": "'$TOKEN'",
-                                "id": 2
-                                
-                                }'
+							}'
 
 							# Armazena o histórico do item em arquivo, somente os valores
-                            retorno=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API")
-                            # Coloca o retorno em arquivo CSV
-                            echo "$retorno"| jq -r '.result[] | [.value] | @csv' > /tmp/rel_resultado_$$.csv 2>/dev/null
-                            # Extrair somente ipv6 ou ipv4                          
-                            grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+|([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}' /tmp/rel_resultado_$$.csv > /tmp/rel_resultado1_$$.csv
-                            # Cria uma cópia para comparação e remove linha desnecessárias
-                            cp /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
-                            # Remove primeira linha do arquivo com resultado 2 para comparação
-                            sed -i '1d' /tmp/rel_resultado2_$$.csv
-                            # Remove as aspas dos arquivos
-                            sed -s -i -E 's/\"//g' /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
-                            # Criar um único arquivo para comparação
-                            paste -d\; /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv > /tmp/rel.final$$.csv
+							retorno=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API")
+							# Coloca o retorno em arquivo CSV
+							echo "$retorno"| jq -r '.result[] | [.value] | @csv' > /tmp/rel_resultado_$$.csv 2>/dev/null
+							# Extrair somente ipv6 ou ipv4                          
+							grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+|([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}' /tmp/rel_resultado_$$.csv > /tmp/rel_resultado1_$$.csv
+							# Cria uma cópia para comparação e remove linha desnecessárias
+							cp /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
+							# Remove primeira linha do arquivo com resultado 2 para comparação
+							sed -i '1d' /tmp/rel_resultado2_$$.csv
+							# Remove as aspas dos arquivos
+							sed -s -i -E 's/\"//g' /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
+							# Criar um único arquivo para comparação
+							paste -d\; /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv > /tmp/rel.final$$.csv
 
 
 							i=0						
-								    # Faz o loop no arquivo /tmp/rel.final$$.csv e compara cada valor
+							        # Faz o loop no arquivo /tmp/rel.final$$.csv e compara cada valor
 							        while IFS=\; read -r valor1 valor2;
 							        do
 							        	    # Verifica se o segundo valor é nulo
@@ -469,5 +468,5 @@ SENHA="api@2020"
 							echo $i
 							# Remove os arquivos temporários
 							rm /tmp/rel_itemid_$$.csv /tmp/rel_resultado_$$.csv /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv /tmp/rel.final$$.csv
-
+					#termina o if do totalip
 			  		fi
