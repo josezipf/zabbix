@@ -28,7 +28,7 @@ Timeout=15
 
 # Colocar script dentro do diretório Externalscripts do Zabbix. Default: /usr/lib/zabbix/externalscripts
 # Permissões para usuário zabbix
-chown zabbix.zabbix zbx_mtr.sh
+chown zabbix.zabbix zbx_mtr.sh;
 chmod +x zbx_mtr.sh
 
 # Importar template e atrelar ao host no Zabbix
