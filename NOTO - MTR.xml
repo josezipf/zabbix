@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>4.0</version>
-    <date>2020-11-30T14:51:00Z</date>
+    <version>4.4</version>
+    <date>2020-12-08T00:37:39Z</date>
     <groups>
         <group>
             <name>Templates Noto</name>
@@ -27,369 +27,182 @@ Desenvolvido por NOTO</description>
             <items>
                 <item>
                     <name>Executa comando para verificação de rota</name>
-                    <type>10</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>zbx_mtr.sh[-mtr,{HOST.HOST},{$DESTINO}]</key>
-                    <delay>1m</delay>
+                    <type>EXTERNAL</type>
+                    <key>zbx_mtr.sh[-mtr,&quot;{HOST.HOST}&quot;,{$DESTINO}]</key>
                     <history>1d</history>
-                    <trends>0d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
+                    <trends>0</trends>
                     <applications>
                         <application>
                             <name>ROTA</name>
                         </application>
                     </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
                 </item>
                 <item>
                     <name>Total de saltos para {$DESTINO}</name>
-                    <type>10</type>
-                    <snmp_community/>
-                    <snmp_oid/>
+                    <type>EXTERNAL</type>
                     <key>zbx_mtr.sh[-total,{HOST.HOST},1]</key>
-                    <delay>2m</delay>
                     <history>7d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
                     <applications>
                         <application>
                             <name>ROTA</name>
                         </application>
                     </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
                 </item>
             </items>
             <discovery_rules>
                 <discovery_rule>
                     <name>Descoberta de rotas</name>
-                    <type>10</type>
-                    <snmp_community/>
-                    <snmp_oid/>
+                    <type>EXTERNAL</type>
                     <key>zbx_mtr.sh[-discovery,{HOST.HOST}]</key>
                     <delay>30s</delay>
-                    <status>0</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
-                    <lifetime>30d</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>Rota {#ROTA} para {$DESTINO} (ASN)</name>
-                            <type>10</type>
-                            <snmp_community/>
-                            <snmp_oid/>
+                            <type>EXTERNAL</type>
                             <key>zbx_mtr.sh[-asn,{HOST.HOST},{#ROTA}]</key>
-                            <delay>1m</delay>
                             <history>7d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>1</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
-                            <applications/>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
+                            <value_type>TEXT</value_type>
                             <application_prototypes>
                                 <application_prototype>
                                     <name>ROTA {#ROTA}</name>
                                 </application_prototype>
                             </application_prototypes>
-                            <master_item/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (AVG)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-avg,{HOST.HOST},{#ROTA}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (BEST)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-best,{HOST.HOST},{#ROTA}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Rota {#ROTA} para {$DESTINO} (IP)</name>
-                            <type>10</type>
-                            <snmp_community/>
-                            <snmp_oid/>
+                            <type>EXTERNAL</type>
                             <key>zbx_mtr.sh[-ip,{HOST.HOST},{#ROTA}]</key>
-                            <delay>1m</delay>
                             <history>7d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>1</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
-                            <applications/>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
+                            <value_type>TEXT</value_type>
                             <application_prototypes>
                                 <application_prototype>
                                     <name>ROTA {#ROTA}</name>
                                 </application_prototype>
                             </application_prototypes>
-                            <master_item/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (LAST)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-last,{HOST.HOST},{#ROTA}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (LOSS)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-loss,{HOST.HOST},{#ROTA}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Rota {#ROTA} para {$DESTINO} (SNT)</name>
-                            <type>10</type>
-                            <snmp_community/>
-                            <snmp_oid/>
+                            <type>EXTERNAL</type>
                             <key>zbx_mtr.sh[-snt,{HOST.HOST},{#ROTA}]</key>
-                            <delay>1m</delay>
                             <history>7d</history>
                             <trends>30d</trends>
-                            <status>0</status>
-                            <value_type>3</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
-                            <applications/>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
                             <application_prototypes>
                                 <application_prototype>
                                     <name>ROTA {#ROTA}</name>
                                 </application_prototype>
                             </application_prototypes>
-                            <master_item/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (STDEV)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-stdev,{HOST.HOST},{#ROTA}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (ALTERAÇÕES)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-totalip,{#ROTA},{$HOSTID}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (WRST)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-wrst,{HOST.HOST},{#ROTA}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>FLOAT</value_type>
+                            <units>ms</units>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes/>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
             </discovery_rules>
-            <httptests/>
             <macros>
                 <macro>
                     <macro>{$DESTINO}</macro>
                     <value>google.com.br</value>
                 </macro>
+                <macro>
+                    <macro>{$HOSTID}</macro>
+                    <value>00000</value>
+                </macro>
             </macros>
-            <templates/>
-            <screens/>
         </template>
     </templates>
 </zabbix_export>
