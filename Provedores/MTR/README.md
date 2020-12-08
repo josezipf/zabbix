@@ -1,3 +1,6 @@
+Esse script realiza o monitoramento de rotas atráves do comando mtr e o seu resultado é enviado para o Zabbix.
+
+
 # Requisitos de pacotes: Instalar conforme seu sistema operacional
 
 # Ubuntu/Debian
