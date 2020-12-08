@@ -15,13 +15,20 @@ SENHA="senha"
 Você pode modificar alterando a macro {$DESTINO} dentro do template ou a nível de host.
 
 # Alterar timeout dentro de zabbix_server.conf
-Para rodar a coleta dos dados do mtr o script executa um comando, que faz o trajeto das rotas. Esse, comando demora um tempo de geralmente 15 segundos.Portanto
-altere, conforme necessário para seu ambiente. Você também, pode ajustar item para ser executado o comando através da chave system.run do agente. Esse método é 
+Para rodar a coleta dos dados do mtr o script executa um comando, que faz o trajeto das rotas. Esse, comando demora um tempo de geralmente 15 segundos. Portanto,
+altere conforme necessário para seu ambiente. Você também, pode ajustar item para ser executado o comando através da chave system.run do agente. Esse método é 
 recomendado(opcional).
 
 Timeout=15
 
-#  Colocar script no diretório Externalscripts do Zabbix. Default: /usr/lib/zabbix/externalscripts
+# Colocar script dentro do diretório Externalscripts do Zabbix. Default: /usr/lib/zabbix/externalscripts
+# Permissões para usuário zabbix
+chown zabbix.zabbix zbx_mtr.sh
+chmod +x zbx_mtr.sh
+
+# Importar template e atrelar ao host no Zabbix
+
+
 
 
 
