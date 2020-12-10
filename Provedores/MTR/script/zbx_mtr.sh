@@ -72,24 +72,24 @@ SENHA="senha"
 
 	# Verifica se está instalado o comando mrt
 	if ! command -v mtr > /dev/null
-    then
-        echo "$MENSAGEM_MTR"
-        exit 0;
-    fi
+    	then
+       	 	echo "$MENSAGEM_MTR"
+        	exit 0;
+    	fi
 
-    # Verifica se está instalado o comando mrt
+   	# Verifica se está instalado o comando mrt
 	if ! command -v jq > /dev/null
-    then
-        echo "$MENSAGEM_JQ"
-        exit 0;
-    fi
+    	then
+       		 echo "$MENSAGEM_JQ"
+        	 exit 0;
+    	fi
 
 #--------------------------------------------[Funções]---------------------------------------------------------------------------------------------------#
 
 
 	autenticacao()
 	{
-    # Autenticação na API Zabbix
+    	# Autenticação na API Zabbix
 
                 JSON='
                     {
@@ -461,26 +461,26 @@ SENHA="senha"
 			  		if [ "$totalip" = 1 ]; 
 			  		then
 
-			  				# Chama a função busca_item
-			  				r_item=$(busca_item 0 0 $3)
-                            # Coloca o retorno em arquivo CSV
-                            echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name] | @csv' > /tmp/rel_itemid_$$.csv
-                            # Extrair o ID do item da rota especifica
-                            id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d\" -f2)
-							# Armazena o histórico do item em arquivo, somente os valores
-							historico="$id_item"; r_historico=$(busca_historico "$historico")
-                            # Coloca o retorno em arquivo CSV
-                            echo "$r_historico"| jq -r '.result[] | [.value] | @csv' > /tmp/rel_resultado_$$.csv 2>/dev/null
-                            # Extrair somente ipv6 ou ipv4                          
-                            grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+|([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}' /tmp/rel_resultado_$$.csv > /tmp/rel_resultado1_$$.csv
-                            # Cria uma cópia para comparação e remove linha desnecessárias
-                            cp /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
-                            # Remove primeira linha do arquivo com resultado 2 para comparação
-                            sed -i '1d' /tmp/rel_resultado2_$$.csv
-                            # Remove as aspas dos arquivos
-                            sed -s -i -E 's/\"//g' /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
-                            # Criar um único arquivo para comparação
-                            paste -d\; /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv > /tmp/rel.final$$.csv
+			  				    # Chama a função busca_item
+			  				    r_item=$(busca_item 0 0 $3)
+							    # Coloca o retorno em arquivo CSV
+							    echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name] | @csv' > /tmp/rel_itemid_$$.csv
+							    # Extrair o ID do item da rota especifica
+							    id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d\" -f2)
+											# Armazena o histórico do item em arquivo, somente os valores
+											historico="$id_item"; r_historico=$(busca_historico "$historico")
+							    # Coloca o retorno em arquivo CSV
+							    echo "$r_historico"| jq -r '.result[] | [.value] | @csv' > /tmp/rel_resultado_$$.csv 2>/dev/null
+							    # Extrair somente ipv6 ou ipv4                          
+							    grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+|([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}' /tmp/rel_resultado_$$.csv > /tmp/rel_resultado1_$$.csv
+							    # Cria uma cópia para comparação e remove linha desnecessárias
+							    cp /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
+							    # Remove primeira linha do arquivo com resultado 2 para comparação
+							    sed -i '1d' /tmp/rel_resultado2_$$.csv
+							    # Remove as aspas dos arquivos
+							    sed -s -i -E 's/\"//g' /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
+							    # Criar um único arquivo para comparação
+							    paste -d\; /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv > /tmp/rel.final$$.csv
 
 
 							i=0						
@@ -516,39 +516,39 @@ SENHA="senha"
 
 			  		if [ "$altrota" = 1 ]; then
 
-			  				# Chama a função busca_item
-			  				r_item=$(busca_item 0 0 $3)
-			  			    # Coloca o retorno em arquivo CSV
-                            echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name, .lastvalue, .prevvalue] | @csv' > /tmp/rel_itemid_$$.csv
-                            # Filtra a rota
-                            id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d, -f6,7|tr -d \")
-                            # Pega o ultimo valor coletado do item
-                            ultimo_valor=$(cut -d, -f1 <<< "$id_item")
-                            anterior_valor=$(cut -d, -f2 <<< "$id_item")
+			  				    # Chama a função busca_item
+			  				    r_item=$(busca_item 0 0 $3)
+							    # Coloca o retorno em arquivo CSV
+							    echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name, .lastvalue, .prevvalue] | @csv' > /tmp/rel_itemid_$$.csv
+							    # Filtra a rota
+							    id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d, -f6,7|tr -d \")
+							    # Pega o ultimo valor coletado do item
+							    ultimo_valor=$(cut -d, -f1 <<< "$id_item")
+							    anterior_valor=$(cut -d, -f2 <<< "$id_item")
 
-                            # Se qualquer valor vir em banco encerra
-                            if [ -z "$ultimo_valor" ] || [ -z "$anterior_valor" ]; then
+							    # Se qualquer valor vir em banco encerra
+							    if [ -z "$ultimo_valor" ] || [ -z "$anterior_valor" ]; then
 
-                            	# Não mudou
-	                           	echo 0
-                            	exit 1;
+								# Não mudou
+									echo 0
+								exit 1;
 
-                            fi
+							    fi
 
-                            # Compara os ultimo valor com anterior, se for diferente mostra 1, senão, mostra 0 continua igual
-                            if [ "$ultimo_valor" != "$anterior_valor" ]; then
+							    # Compara os ultimo valor com anterior, se for diferente mostra 1, senão, mostra 0 continua igual
+							    if [ "$ultimo_valor" != "$anterior_valor" ]; then
 
-                            	# Mudou o valor
-                            	echo 1
+								# Mudou o valor
+								echo 1
 
-                            else
-                            	# Não mudou
-                            	echo 0
+							    else
+								# Não mudou
+								echo 0
 
-                            fi
+							    fi
 
-                            rm /tmp/rel_itemid_$$.csv
+							    rm /tmp/rel_itemid_$$.csv
 
-			  		fi
+					  fi
 
 
