@@ -3,7 +3,7 @@
 #
 # Versão 1: Script para coleta de rotas via comando mtr para Zabbix.
 #
-# Ex: ./zbx_mrt.sh -discovery
+# Ex: ./zbx_mrt.sh -discovery nomedohost
 #
 # Requisitos: Comando mtr
 #
@@ -27,7 +27,7 @@ asn=0
 #------------------------------------[ INFORMAÇÔES ZABBBIX ]-------------------------------------------------------------------------------------#
 
 # Caminho para conectar no seu Zabbix via API
-API="http://127.0.0.1/zabbix/api_jsonrpc.php"
+API="http://127.0.0.1/noto/api_jsonrpc.php"
 USUARIO="usuario"
 SENHA="senha"
 
@@ -36,11 +36,17 @@ SENHA="senha"
 	MENSAGEM_USO="
 	   Uso: $(basename "$0")[-discovery|-V|-h]
 
-	     -discovery realiza a descoberta de rotas e gera em formato JSON para LLD Zabbix
+	     -discovery nomedohost realiza a descoberta de rotas e gera em formato JSON para LLD Zabbix
 	     -ip coleta o ip da rota
 	     -snt coleta o snt da rota
 	     -asn coleta asn da rota
+	     -best coleta best da rota
+	     -loss coleta perda de pacote da rota
+	     -stdev coleta stdev da rota
+	     -avg coleta avg da rota
+	     -wrst coleta wrst da rota
 	     -total coleta o total de saltos percorridos
+	     -totalip coleta o total de alterações de ip por rota
 	     -V mostra versão do script
 	     -h mostra ajuda
 
@@ -48,9 +54,12 @@ SENHA="senha"
 	     Ex: ./zbx_mrt.sh -ip nomehost numero_da_rota
 	     Ex: ./zbx_mrt.sh -snt nomehost numero_da_rota
 	     Ex: ./zbx_mrt.sh -asn nomehost numero_da_rota
+	     Ex: ./zbx_mrt.sh -total nomehost numero_da_rota
+	     Ex: ./zbx_mrt.sh -totalip numero_da_rota IDdohostZabbix
+	     Ex: ./zbx_mrt.sh -altrota numero_da_rota IDdohostZabbix
 	   "
 	# Mensagem para informar usuário que o comando mtr não está instalado.
-	MENSAGEM_MTR="Pacote mtr não instalado, 
+	MENSAGEM_MTR="Pacote mtr e jq não instalado, 
 
 		instale com apt install mtr em caso de Ubuntu/Debian ou 
 		instale com yum install mtr para RedHat Centos"
@@ -63,17 +72,104 @@ SENHA="senha"
 
 	# Verifica se está instalado o comando mrt
 	if ! command -v mtr > /dev/null
-        then
-           echo "$MENSAGEM_MTR"
-           exit 0;
-        fi
+    then
+        echo "$MENSAGEM_MTR"
+        exit 0;
+    fi
 
-       # Verifica se está instalado o comando mrt
+    # Verifica se está instalado o comando mrt
 	if ! command -v jq > /dev/null
-        then
-          echo "$MENSAGEM_JQ"
-          exit 0;
-        fi
+    then
+        echo "$MENSAGEM_JQ"
+        exit 0;
+    fi
+
+#--------------------------------------------[Funções]---------------------------------------------------------------------------------------------------#
+
+
+	autenticacao()
+	{
+    # Autenticação na API Zabbix
+
+                JSON='
+                    {
+                       "jsonrpc": "2.0",
+                       "method": "user.login",
+                                "params": {
+                                             "user": "'$USUARIO'",
+                                             "password": "'$SENHA'"
+                                          },
+                       "id": 0
+                    }
+                    '
+                # Armazena o TOKEN de autenticação
+                retorno_autenticacao=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API" | cut -d '"' -f8)
+                echo "$retorno_autenticacao"
+        }
+
+	busca_item() 
+	{
+	# Consulta via JSON o id do ITEM por host
+
+		TOKEN=$(autenticacao)
+
+		local host=$3
+
+                JSON_ITEM='
+                    {
+                           "jsonrpc": "2.0",
+                           "method": "item.get",
+                           "params": {
+                                       "output": "extend",
+                                       "hostids": "'$host'",
+                                       "sortfield": "name",
+                                       "search": {
+                                                   "name": "(IP)"
+                                                 }
+
+                                     },
+
+	                        "auth": "'$TOKEN'",
+                            "id": 1
+
+                    }
+                    '
+				retorno_item=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON_ITEM" "$API")
+				echo "$retorno_item"
+	}
+
+	busca_historico() 
+	{
+
+	# Consulta histórico do item via API
+	TOKEN=$(autenticacao)
+
+	local historico='$id_item'
+
+	
+		        JSON_HISTORICO='
+		            {
+		               "jsonrpc": "2.0",
+		               "method": "history.get",
+		               "params": {
+		                           "output": "extend",
+		                           "history": 1,
+		                           "itemids": "'$historico'",
+		                           "sortfield": "clock",
+		                           "sortorder": "DESC",
+		                           "limit": "'$total_valores'"
+		                 	     },
+
+		                "auth": "'$TOKEN'",
+		                "id": 2                
+		            }
+		            '
+		        retorno_historico=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON_HISTORICO" "$API")
+		        echo "$retorno_historico"
+
+    }
+
+#-----------------------------------------------[Início]--------------------------------------------------------------------------------------------------------#
 
 	# Se não passar nenhum arqgumento, mostra mensagem de ajuda
 	[ "$1" ] || {
@@ -125,6 +221,9 @@ SENHA="senha"
 						;;
 
 						-totalip) totalip=1
+						;;
+
+						-altrota) altrota=1
 						;;
 
 				        -h|--help)
@@ -200,12 +299,12 @@ SENHA="senha"
 						fi
 	  				fi
 
-					# Precisa passar exatamente 2 parâmetros
-					    [ $# -ne 3 ] && 
-						{ 
-						  echo "Informe 3 parâmetros!" 
-						  exit 0;
-						}
+	  				# Precisa passar exatamente 3 parâmetros
+	  			    [ $# -ne 3 ] && 
+	  				{ 
+	  				  echo "Informe 3 parâmetros!" 
+	  				  exit 0;
+	  				}
 
   					# Executa o comando mtr e armazena num arquivo temporário
 			  		test "$mtr" = 1 && rota=$(mtr -w --no-dns -z "$destino") && \
@@ -348,7 +447,7 @@ SENHA="senha"
 			  			if [ -z "$r_stdev" ]; then
 
 			  				echo 0
-			  			    exit 0;
+			  			    exit 1;
 
 			  			fi 
 
@@ -362,89 +461,30 @@ SENHA="senha"
 			  		if [ "$totalip" = 1 ]; 
 			  		then
 
-							# Autenticação na API via JSON
-							JSON='
-							    {
-							        "jsonrpc": "2.0",
-							        "method": "user.login",
-							        "params": {
-							            "user": "'$USUARIO'",
-							            "password": "'$SENHA'"
-							        },
-							        "id": 0
-							    }
-							    '
-
-							# Armazena o TOKEN de autenticação
-							TOKEN=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API" | cut -d '"' -f8)
-
-
-						    # Consulta via JSON o id do ITEM por host
-							JSON='
-							    {
-
-							   "jsonrpc": "2.0",
-							   "method": "item.get",
-							   "params": {
-							               "output": "extend",
-							               "hostids": "'$3'",
-							               "sortfield": "name",
-							               "search": {
-							                        "name": "(IP)"
-							                }
-
-							    },
-
-							    "auth": "'$TOKEN'",
-							    "id": 1
-
-							   }
-							    '
-
-						    # Armazena em um arquivo os IDs dos itens que contém ips por host.    
-						    r_item=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API")
-						    # Coloca o retorno em arquivo CSV
-						    echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name] | @csv' > /tmp/rel_itemid_$$.csv
-						    # Extrair o ID do item da rota especifica
-						    id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d\" -f2)
-        					    # Consulta histórico do item via JSON
-						    JSON='
-							{
-
-						       "jsonrpc": "2.0",
-						       "method": "history.get",
-						       "params": {
-								   "output": "extend",
-								   "history": 1,
-								   "itemids": "'$id_item'",
-								   "sortfield": "clock",
-								   "sortorder": "DESC",
-								   "limit": "'$total_valores'"
-								     },
-
-							"auth": "'$TOKEN'",
-							"id": 2
-
-							}'
-
+			  				# Chama a função busca_item
+			  				r_item=$(busca_item 0 0 $3)
+                            # Coloca o retorno em arquivo CSV
+                            echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name] | @csv' > /tmp/rel_itemid_$$.csv
+                            # Extrair o ID do item da rota especifica
+                            id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d\" -f2)
 							# Armazena o histórico do item em arquivo, somente os valores
-							retorno=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON" "$API")
-							# Coloca o retorno em arquivo CSV
-							echo "$retorno"| jq -r '.result[] | [.value] | @csv' > /tmp/rel_resultado_$$.csv 2>/dev/null
-							# Extrair somente ipv6 ou ipv4                          
-							grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+|([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}' /tmp/rel_resultado_$$.csv > /tmp/rel_resultado1_$$.csv
-							# Cria uma cópia para comparação e remove linha desnecessárias
-							cp /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
-							# Remove primeira linha do arquivo com resultado 2 para comparação
-							sed -i '1d' /tmp/rel_resultado2_$$.csv
-							# Remove as aspas dos arquivos
-							sed -s -i -E 's/\"//g' /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
-							# Criar um único arquivo para comparação
-							paste -d\; /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv > /tmp/rel.final$$.csv
+							historico="$id_item"; r_historico=$(busca_historico "$historico")
+                            # Coloca o retorno em arquivo CSV
+                            echo "$r_historico"| jq -r '.result[] | [.value] | @csv' > /tmp/rel_resultado_$$.csv 2>/dev/null
+                            # Extrair somente ipv6 ou ipv4                          
+                            grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+|([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}' /tmp/rel_resultado_$$.csv > /tmp/rel_resultado1_$$.csv
+                            # Cria uma cópia para comparação e remove linha desnecessárias
+                            cp /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
+                            # Remove primeira linha do arquivo com resultado 2 para comparação
+                            sed -i '1d' /tmp/rel_resultado2_$$.csv
+                            # Remove as aspas dos arquivos
+                            sed -s -i -E 's/\"//g' /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv
+                            # Criar um único arquivo para comparação
+                            paste -d\; /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv > /tmp/rel.final$$.csv
 
 
 							i=0						
-							        # Faz o loop no arquivo /tmp/rel.final$$.csv e compara cada valor
+								    # Faz o loop no arquivo /tmp/rel.final$$.csv e compara cada valor
 							        while IFS=\; read -r valor1 valor2;
 							        do
 							        	    # Verifica se o segundo valor é nulo
@@ -467,6 +507,48 @@ SENHA="senha"
 							# Total de alterações
 							echo $i
 							# Remove os arquivos temporários
-							rm /tmp/rel_itemid_$$.csv /tmp/rel_resultado_$$.csv /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv /tmp/rel.final$$.csv
-					#termina o if do totalip
+						    rm /tmp/rel_itemid_$$.csv /tmp/rel_resultado_$$.csv /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv /tmp/rel.final$$.csv
+
+					fi			
+						
+
+			  		
+
+			  		if [ "$altrota" = 1 ]; then
+
+			  				# Chama a função busca_item
+			  				r_item=$(busca_item 0 0 $3)
+			  			    # Coloca o retorno em arquivo CSV
+                            echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name, .lastvalue, .prevvalue] | @csv' > /tmp/rel_itemid_$$.csv
+                            # Filtra a rota
+                            id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d, -f6,7|tr -d \")
+                            # Pega o ultimo valor coletado do item
+                            ultimo_valor=$(cut -d, -f1 <<< "$id_item")
+                            anterior_valor=$(cut -d, -f2 <<< "$id_item")
+
+                            # Se qualquer valor vir em banco encerra
+                            if [ -z "$ultimo_valor" ] || [ -z "$anterior_valor" ]; then
+
+                            	# Não mudou
+	                           	echo 0
+                            	exit 1;
+
+                            fi
+
+                            # Compara os ultimo valor com anterior, se for diferente mostra 1, senão, mostra 0 continua igual
+                            if [ "$ultimo_valor" != "$anterior_valor" ]; then
+
+                            	# Mudou o valor
+                            	echo 1
+
+                            else
+                            	# Não mudou
+                            	echo 0
+
+                            fi
+
+                            rm /tmp/rel_itemid_$$.csv
+
 			  		fi
+
+
