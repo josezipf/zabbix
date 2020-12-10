@@ -183,8 +183,8 @@ SENHA="senha"
 
 					case "$1" in
 				        
-				        # Opções de ligam e desligam chaves
-				        -discovery) discovery=1
+						# Opções de ligam e desligam chaves
+						-discovery) discovery=1
 						;;
 
 						-ip) ip=1
@@ -226,26 +226,26 @@ SENHA="senha"
 						-altrota) altrota=1
 						;;
 
-				        -h|--help)
-				            echo "$MENSAGEM_USO"
-				            exit 0
-				        ;;
-				        
-				        -V|--version)
-				            echo -n $(basename "$0")
-				            # Extrai a versão diretamente dos cabeçalhos do programa
-				            grep '^# Versão' "$0"| tail -1| cut -d: -f1 |tr -d \#
-				            exit 0
+						-h|--help)
+						    echo "$MENSAGEM_USO"
+						    exit 0
+						;;
 
-				        ;;        
-				           
-				         *)  # Opção inválida
-				            if test -n "$1"
-				            then
-				                echo Opção invalida: $1
-				                exit 1
-				            fi
-				        ;;
+						-V|--version)
+						    echo -n $(basename "$0")
+						    # Extrai a versão diretamente dos cabeçalhos do programa
+						    grep '^# Versão' "$0"| tail -1| cut -d: -f1 |tr -d \#
+						    exit 0
+
+						;;        
+
+						 *)  # Opção inválida
+						    if test -n "$1"
+						    then
+							echo Opção invalida: $1
+							exit 1
+						    fi
+						;;
 				    esac
 
 					if [ "$discovery" = 1 ]; then
@@ -467,8 +467,8 @@ SENHA="senha"
 							    echo "$r_item" |jq -r '.result[] | [.itemid, .key_, .name] | @csv' > /tmp/rel_itemid_$$.csv
 							    # Extrair o ID do item da rota especifica
 							    id_item=$(grep "Rota $2 " /tmp/rel_itemid_$$.csv |cut -d\" -f2)
-											# Armazena o histórico do item em arquivo, somente os valores
-											historico="$id_item"; r_historico=$(busca_historico "$historico")
+							    # Armazena o histórico do item em arquivo, somente os valores
+							    historico="$id_item"; r_historico=$(busca_historico "$historico")
 							    # Coloca o retorno em arquivo CSV
 							    echo "$r_historico"| jq -r '.result[] | [.value] | @csv' > /tmp/rel_resultado_$$.csv 2>/dev/null
 							    # Extrair somente ipv6 ou ipv4                          
@@ -484,7 +484,7 @@ SENHA="senha"
 
 
 							i=0						
-								    # Faz o loop no arquivo /tmp/rel.final$$.csv e compara cada valor
+								# Faz o loop no arquivo /tmp/rel.final$$.csv e compara cada valor
 							        while IFS=\; read -r valor1 valor2;
 							        do
 							        	    # Verifica se o segundo valor é nulo
@@ -507,7 +507,7 @@ SENHA="senha"
 							# Total de alterações
 							echo $i
 							# Remove os arquivos temporários
-						    rm /tmp/rel_itemid_$$.csv /tmp/rel_resultado_$$.csv /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv /tmp/rel.final$$.csv
+						        rm /tmp/rel_itemid_$$.csv /tmp/rel_resultado_$$.csv /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv /tmp/rel.final$$.csv
 
 					fi				  		
 
