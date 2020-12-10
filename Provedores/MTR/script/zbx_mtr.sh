@@ -59,7 +59,7 @@ SENHA="senha"
 	     Ex: ./zbx_mrt.sh -altrota numero_da_rota IDdohostZabbix
 	   "
 	# Mensagem para informar usuário que o comando mtr não está instalado.
-	MENSAGEM_MTR="Pacote mtr e jq não instalado, 
+	MENSAGEM_MTR="Pacote mtr não instalado, 
 
 		instale com apt install mtr em caso de Ubuntu/Debian ou 
 		instale com yum install mtr para RedHat Centos"
