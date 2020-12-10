@@ -167,7 +167,7 @@ SENHA="senha"
 		        retorno_historico=$(curl -s -X POST -H "Content-Type:application/json" -d "$JSON_HISTORICO" "$API")
 		        echo "$retorno_historico"
 
-    }
+        }
 
 #-----------------------------------------------[Início]--------------------------------------------------------------------------------------------------------#
 
@@ -509,10 +509,7 @@ SENHA="senha"
 							# Remove os arquivos temporários
 						    rm /tmp/rel_itemid_$$.csv /tmp/rel_resultado_$$.csv /tmp/rel_resultado1_$$.csv /tmp/rel_resultado2_$$.csv /tmp/rel.final$$.csv
 
-					fi			
-						
-
-			  		
+					fi				  		
 
 			  		if [ "$altrota" = 1 ]; then
 
