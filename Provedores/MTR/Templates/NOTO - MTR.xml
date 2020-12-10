@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.4</version>
-    <date>2020-12-08T00:37:39Z</date>
+    <date>2020-12-10T18:19:41Z</date>
     <groups>
         <group>
             <name>Templates Noto</name>
@@ -56,6 +56,18 @@ Desenvolvido por NOTO</description>
                     <key>zbx_mtr.sh[-discovery,{HOST.HOST}]</key>
                     <delay>30s</delay>
                     <item_prototypes>
+                        <item_prototype>
+                            <name>Rota {#ROTA} para {$DESTINO} (STATUS)</name>
+                            <type>EXTERNAL</type>
+                            <key>zbx_mtr.sh[-altrota,{#ROTA},{$HOSTID}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>ROTA {#ROTA}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
                         <item_prototype>
                             <name>Rota {#ROTA} para {$DESTINO} (ASN)</name>
                             <type>EXTERNAL</type>
