@@ -49,8 +49,8 @@ SENHA="senha"
 
 #--------------------------------------------[Funções]--------------------------------------------------------------------------------------------#
 
-	autenticacao()
-	{
+   autenticacao()
+   {
     			# Autenticação na API Zabbix
 
                 JSON='
@@ -73,7 +73,7 @@ SENHA="senha"
 
 
     busca_item() 
-	{
+    {
 	# Consulta via API todos os itens que contenham o nome "Status ONU" de um host específico.
 
 		TOKEN=$(autenticacao)
