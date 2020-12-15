@@ -20,9 +20,9 @@ SENHA="senha"
 
 	# Mensagem de uso do programa que é enviada para o usuário como ajuda.
 	MENSAGEM_USO="
-	   Uso: $(basename "$0")[-discovery|-V|-h]
+	   Uso: $(basename "$0")[-total|-online|offline|-V|-h]
 
-	   	 -total   contagem de total de onu
+	     -total   contagem de total de onu
 	     -online  contagem de onu online
 	     -offline contagem de onu offline
 	     -V mostra versão do script
