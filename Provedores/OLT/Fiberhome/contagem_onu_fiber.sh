@@ -106,7 +106,7 @@ SENHA="senha"
 #-------------------------------------------------------[ INICIO ]-------------------------------------------------------------------------------#
 
 
-					# Precisa passar exatamente 2 parâmetros
+				    # Precisa passar exatamente 2 parâmetros
 	  			    [ $# -ne 2 ] && 
 	  				{ 
 	  				  echo "Informe 2 parâmetros!" 
@@ -118,10 +118,10 @@ SENHA="senha"
 				        -online) online=1
 						;;
 
-						-offline) offline=1
+					-offline) offline=1
 						;;
 
-						-total) total=1
+					-total) total=1
 						;;
 
 				        -h|--help)
