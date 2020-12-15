@@ -160,15 +160,15 @@ SENHA="senha"
 
 				    fi
 
-				    # Coleta o total de onus coletadas via API
+				    # Coleta o total de onus coletadas via API analisando um arquivo csv gerado pelo jq
 				    test "$total" = 1 && r_item=$(busca_item 0 $2) && echo "$r_item" |jq -r '.result[] | [.lastvalue] | @csv' > /tmp/rel_valores_$$.csv \
 				    && wc -l < /tmp/rel_valores_$$.csv
 
-				    # Coleta somente as ONU que tiverem valor 1 
+				    # Coleta somente as ONU que tiverem valor 1 analisando um arquivo csv gerado pelo jq
 				    test "$online" = 1 && r_item=$(busca_item 0 $2) && echo "$r_item" |jq -r '.result[] | [.lastvalue] | @csv' > /tmp/rel_valores_$$.csv \
 				    && grep "1" /tmp/rel_valores_$$.csv|wc -l
 
-				    # Coleta somente as ONU que tiverem valor 2
+				    # Coleta somente as ONU que tiverem valor 2 analisando um arquivo csv gerado pelo jq
 				    test "$offline" = 1 && r_item=$(busca_item 0 $2) && echo "$r_item" |jq -r '.result[] | [.lastvalue] | @csv' > /tmp/rel_valores_$$.csv \
 				    && grep "2" /tmp/rel_valores_$$.csv|wc -l
 
