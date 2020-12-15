@@ -147,11 +147,8 @@ SENHA="senha"
 				    esac
 
 				    # Chama a função de autenticação
-				    auth=$(autenticacao)
-
- 				    # Armazena dados da autenticação
-		   		    auth=$(echo "$auth" |wc --chars)
- 		  
+				    auth=$(autenticacao|wc --chars)
+ 				    		  
 				    # Se falhar autenticação encerra o script e informa o usuário
 				    if [ "$auth" -lt 32 ]; then
 
