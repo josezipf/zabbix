@@ -42,10 +42,10 @@ SENHA="senha"
 
 	# Verifica se está instalado o comando jq
 	if ! command -v jq > /dev/null
-    then
-        echo "$MENSAGEM_JQ"
-        exit 0;
-    fi
+        then
+        	echo "$MENSAGEM_JQ"
+        	exit 0;
+        fi
 
 #--------------------------------------------[Funções]--------------------------------------------------------------------------------------------#
 
