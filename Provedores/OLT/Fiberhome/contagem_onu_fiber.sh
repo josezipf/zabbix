@@ -149,7 +149,7 @@ SENHA="senha"
 				    # Chama a função de autenticação
 				    auth=$(autenticacao)
 
- 					# Armazena dados da autenticação
+ 				    # Armazena dados da autenticação
 		   		    auth=$(echo "$auth" |wc --chars)
  		  
 				    # Se falhar autenticação encerra o script e informa o usuário
