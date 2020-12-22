@@ -15,7 +15,7 @@
 #------------------------------------[ INFORMAÇÔES ZABBBIX ]-----------------------------------------------------------------------#
 
 # Caminho para conectar no seu Zabbix via API
-API="https://zabbix.juliusbaerfamilyoffice.com/jbfo/api_jsonrpc.php"
+API="https://ipdoseuzabbix/zabbix/api_jsonrpc.php"
 USUARIO="$1"
 SENHA="$2"
 
